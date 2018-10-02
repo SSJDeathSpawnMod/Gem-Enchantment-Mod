@@ -9,7 +9,6 @@ import com.deathspawn.advanced.energy.DynamicEnergyStorage;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.recipes.GemEnchanterRecipes;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,22 +16,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityGemEnchanter extends TileEntityBase implements ITickable, ICapabilityProvider{
+public class TileEntityGemEnchanter extends TileEntityBase implements ITickable, ICapabilityProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(4);
 	private DynamicEnergyStorage energy = new DynamicEnergyStorage(1000000);
 
 	private boolean isEnchanting;
-	
+
 	private int enchantingTime;
-	
+
 	private int currentItemEnchantTime;
 	private int enchantTime;
 	private int shouldEnchantTime = 50;
@@ -49,13 +47,12 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		compound.setInteger("enchantingTime", this.enchantingTime);
 		compound.setInteger("shouldEnchantTime", this.shouldEnchantTime);
 		compound.setBoolean("isEnchanting", this.isEnchanting);
-		if (this.hasCustomName())
-        {
-            compound.setString("enchanterCustomName", this.enchanterCustomName);
-        }
+		if (this.hasCustomName()) {
+			compound.setString("enchanterCustomName", this.enchanterCustomName);
+		}
 		return compound;
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
@@ -66,10 +63,9 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		this.enchantingTime = compound.getInteger("enchantingTime");
 		this.shouldEnchantTime = compound.getInteger("shouldEnchantTime");
 		this.isEnchanting = compound.getBoolean("isEnchanting");
-		if (compound.hasKey("CustomName", 8))
-        {
-            this.enchanterCustomName = compound.getString("CustomName");
-        }
+		if (compound.hasKey("CustomName", 8)) {
+			this.enchanterCustomName = compound.getString("CustomName");
+		}
 	}
 
 	public boolean isEmpty() {
@@ -104,10 +100,10 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 	public boolean hasCustomName() {
 		return this.enchanterCustomName != null && !this.enchanterCustomName.isEmpty();
 	}
-	
-	public void setCustomInventoryName(String name){
-        this.enchanterCustomName = name;
-    }
+
+	public void setCustomInventoryName(String name) {
+		this.enchanterCustomName = name;
+	}
 
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		ItemStack itemstack = this.inventory.getStackInSlot(index);
@@ -166,59 +162,19 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		
 		Utils.getLogger().info(this.energy.getEnergyStored());
 		
-		boolean flag = this.isEnchanting();
-        boolean flag1 = true;
-
-        if (this.isEnchanting())
-        {
-            --this.enchantingTime;
-        }
-        
-        if (!this.world.isRemote)
-        {
-            ItemStack itemstack = this.inventory.getStackInSlot(1);
-            if (this.isEnchanting() || !itemstack.isEmpty() && !((ItemStack)this.inventory.getStackInSlot(0)).isEmpty() && !((ItemStack)this.inventory.getStackInSlot(1)).isEmpty())
-            {
-                if (!this.isEnchanting() && this.canSmelt())
-                {
-                    this.enchantingTime = 0;
-                    this.shouldEnchantTime = 50;
-                    this.currentItemEnchantTime = this.enchantingTime;
-
-                    if (this.isEnchanting())
-                    {
-                        flag1 = true;
-                        this.energy.extractEnergy(10, false);
-                    }
-                }
-
-                if (this.isEnchanting() && this.canSmelt())
-                {
-                    ++this.enchantTime;
-                    Utils.getLogger().info(this.enchantTime + " " + this.shouldEnchantTime);
-                    if (this.enchantTime == this.shouldEnchantTime)
-                    {
-                        this.enchantTime = 0;
-                        this.shouldEnchantTime = 50;
-                        this.smeltItem();
-                        flag1 = true;
-                    }
-                }
-                else
-                {
-                    this.enchantTime = 0;
-                }
-            }
-            else if (!this.isEnchanting() && this.enchantTime > 0)
-            {
-                this.enchantTime = MathHelper.clamp(this.enchantTime - 2, 0, this.shouldEnchantTime);
-            }
-
-            if (flag != this.isEnchanting())
-            {
-                flag1 = true;
-            }
-        }
+		boolean flag1 = this.isEnchanting();
+		
+		if(this.canSmelt()) {
+			currentItemEnchantTime = getEnchantTime(this.inventory.getStackInSlot(0),this.inventory.getStackInSlot(1));
+			shouldEnchantTime = currentItemEnchantTime;
+			this.smeltItem();
+		}
+		else {
+			enchantTime = 0;
+			currentItemEnchantTime = 0;
+			enchantingTime = 0;
+			shouldEnchantTime = 0;
+		}
 
         if (flag1)
         {
@@ -226,81 +182,51 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
         }
     }
 
-    public int getEnchantTime(ItemStack stack)
-    {
-        return 50;
-    }
+	public int getEnchantTime(ItemStack stack, ItemStack stack2) {
+		return 50;
+	}
 
-    /**
-     * Returns true if the furnace can smelt an item, i.e. has a source item, destination stack isn't full, etc.
-     */
-    private boolean canSmelt()
-    {
-    	Utils.getLogger().info(this.energy.getEnergyStored());
-        if (((ItemStack)this.inventory.getStackInSlot(0)).isEmpty() || ((ItemStack)this.inventory.getStackInSlot(1)).isEmpty())
-        {
-            return false;
-        }
-        else if(this.energy.getEnergyStored() < 10 ) {
-        	return false;
-        }
-        else
-        {
-            ItemStack itemstack = GemEnchanterRecipes.instance().getEnchantingResult(this.inventory.getStackInSlot(0), this.inventory.getStackInSlot(1));
+	/**
+	 * Returns true if the furnace can smelt an item, i.e. has a source item,
+	 * destination stack isn't full, etc.
+	 */
+	private boolean canSmelt() {
+		ItemStack slot0 = this.inventory.getStackInSlot(0);
+		ItemStack slot1 = this.inventory.getStackInSlot(1);
+		ItemStack slot2 = this.inventory.getStackInSlot(2);
+		boolean canSmelt = false;
 
-            if (itemstack.isEmpty())
-            {
-                return false;
-            }
-            else
-            {
-            	//Utils.getLogger().info("Reached Here");
-                ItemStack itemstack1 = this.inventory.getStackInSlot(2);
+		if (slot0 != ItemStack.EMPTY && slot1 != ItemStack.EMPTY) {
+			ItemStack recipes = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
+			if (recipes != ItemStack.EMPTY) {
+				if(slot2.getItem() == recipes.getItem() && slot2.getCount() < 64 && this.energy.getEnergyStored() > 10 ) {
+					canSmelt = true;
+				}
+			}
+		}
+		return canSmelt;
+	}
 
-                if (itemstack1.isEmpty())
-                {
-                    return true;
-                }
-                else if (!itemstack1.isItemEqual(itemstack))
-                {
-                    return false;
-                }
-                else if (itemstack1.getCount() + itemstack.getCount() <= 64 && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize())  // Forge fix: make furnace respect stack sizes in furnace recipes
-                {
-                    return true;
-                }
-                else
-                {
-                    return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
-                }
-            }
-        }
-    }
-    
-    public void smeltItem()
-    {
-        if (this.canSmelt())
-        {
-            ItemStack itemstack = this.inventory.getStackInSlot(0);
-            ItemStack itemstack1 = this.inventory.getStackInSlot(1);
-            ItemStack itemstack2 = GemEnchanterRecipes.instance().getEnchantingResult(itemstack, itemstack1);
-            ItemStack itemstack3 = this.inventory.getStackInSlot(2);
+	public void smeltItem() {
+		if (this.canSmelt()) {
+			ItemStack slot0 = this.inventory.getStackInSlot(0);
+			ItemStack slot1 = this.inventory.getStackInSlot(1);
+			ItemStack result = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
+			ItemStack slot2 = this.inventory.getStackInSlot(2);
+			
+			if(this.isEnchanting()) {
+				if(this.enchantTime >= this.getShouldEnchantTime()) {
+					slot0.shrink(1);
+					slot1.shrink(1);
+				}
+				else {
+					enchantTime++;
+				}
+			}
+		}
+	}
 
-            if (itemstack3.isEmpty())
-            {
-                this.inventory.setStackInSlot(2, itemstack2.copy());
-            }
-            else if (itemstack3.getItem() == itemstack2.getItem())
-            {
-                itemstack3.grow(itemstack2.getCount());
-            }
-
-            itemstack.shrink(1);
-            itemstack1.shrink(1);
-        }
-    }
-    
-    public int getEnchantingTime() {
+	public int getEnchantingTime() {
 		return this.enchantingTime;
 	}
 
@@ -336,9 +262,8 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		this.isEnchanting = isEnchanting;
 	}
 
-	public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
-        return index == 1 || index == 2;
-    }
-		
+	public boolean isItemValidForSlot(int index, ItemStack stack) {
+		return index == 1 || index == 2;
+	}
+
 }
