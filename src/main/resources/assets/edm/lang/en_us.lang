@@ -1,0 +1,12 @@
+item.fire_ingot.name=Fire Gem
+item.fire_axe.name=Fire Axe
+item.fire_hoe.name=Fire Hoe
+item.fire_pickaxe.name=Fire Pickaxe
+item.fire_shovel.name=Fire Shovel
+item.fire_sword.name=Fire Sword
+
+tile.fire_ore.name=Fire Ore
+tile.fire_block.name=Block of Fire
+tile.gem_enchanter.name=Gem Infusion Table
+
+container.enchanter=Gem Infusion Table

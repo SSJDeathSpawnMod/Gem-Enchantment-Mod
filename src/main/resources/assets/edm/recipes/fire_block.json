@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "edm:fire_ingot"
+    }
+  },
+  "result": {
+    "item": "edm:fire_block"
+  }
+}
