@@ -162,9 +162,7 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		}
 
 		Utils.getLogger().info(this.energy.getEnergyStored());
-
-		boolean flag1 = this.isEnchanting();
-
+		
 		if (this.canSmelt()) {
 			currentItemEnchantTime = getEnchantTime(this.inventory.getStackInSlot(0), this.inventory.getStackInSlot(1));
 			shouldEnchantTime = currentItemEnchantTime;
@@ -177,10 +175,7 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 			shouldEnchantTime = 0;
 			this.isEnchanting = false;
 		}
-
-		if (flag1) {
-			this.markDirty();
-		}
+		this.markDirty();
 	}
 
 	public int getEnchantTime(ItemStack stack, ItemStack stack2) {
@@ -199,6 +194,7 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 		if (slot0 != ItemStack.EMPTY && slot1 != ItemStack.EMPTY) {
 			ItemStack recipes = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
+			Utils.getLogger().info(recipes.toString());
 			if (recipes != ItemStack.EMPTY) {
 				if (((slot2.getItem() == recipes.getItem() && slot2.getCount() < 64) || slot2 == ItemStack.EMPTY)
 						&& this.energy.getEnergyStored() > 10) {
@@ -220,6 +216,12 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 				if (this.enchantTime >= this.getShouldEnchantTime()) {
 					slot0.shrink(1);
 					slot1.shrink(1);
+					if(slot1.getCount() == 0) {
+						this.inventory.setStackInSlot(1, ItemStack.EMPTY);
+					}
+					if(slot0.getCount() == 0) {
+						this.inventory.setStackInSlot(0, ItemStack.EMPTY);
+					}
 					if (slot2 == ItemStack.EMPTY) {
 						this.inventory.setStackInSlot(2, result);
 					} else {
@@ -227,6 +229,7 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 					}
 				} else {
 					this.enchantTime++;
+					this.energy.extractEnergy(10, false);
 				}
 			}
 		}
