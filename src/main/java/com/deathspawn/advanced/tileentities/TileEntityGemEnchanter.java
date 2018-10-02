@@ -10,7 +10,9 @@ import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.recipes.GemEnchanterRecipes;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -116,8 +118,6 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		}
 
 		if (index == 0 && !flag) {
-			this.shouldEnchantTime = 50;
-			this.enchantTime = 0;
 			this.markDirty();
 		}
 	}
@@ -149,31 +149,31 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 	@Override
 	public void update() {
-
-		List<EntityItem> items = new ArrayList<EntityItem>();
-		items.addAll(world.getEntitiesWithinAABB(EntityItem.class,
-				new AxisAlignedBB(pos.add(3, 3, 3), pos.add(-3, -3, -3))));
-		for (EntityItem item : items) {
-			Utils.getLogger().info(item.getItem().getItem().toString());
-			if (item.getItem().getItem() == Items.STICK) {
-				Utils.getLogger().info("Added Power!");
-				this.energy.receiveEnergy(1000, false);
+		if (!this.world.isRemote) {
+			List<EntityItem> items = new ArrayList<EntityItem>();
+			items.addAll(world.getEntitiesWithinAABB(EntityItem.class,
+					new AxisAlignedBB(pos.add(3, 3, 3), pos.add(-3, -3, -3))));
+			for (EntityItem item : items) {
+				Utils.getLogger().info(item.getItem().getItem().toString());
+				if (item.getItem().getItem() == Items.STICK) {
+					Utils.getLogger().info("Added Power!");
+					this.energy.receiveEnergy(1000, false);
+				}
 			}
-		}
 
-		Utils.getLogger().info(this.energy.getEnergyStored());
-		
-		if (this.canSmelt()) {
-			currentItemEnchantTime = getEnchantTime(this.inventory.getStackInSlot(0), this.inventory.getStackInSlot(1));
-			shouldEnchantTime = currentItemEnchantTime;
-			this.isEnchanting = true;
-			this.smeltItem();
-		} else {
-			enchantTime = 0;
-			currentItemEnchantTime = 0;
-			enchantingTime = 0;
-			shouldEnchantTime = 0;
-			this.isEnchanting = false;
+			if (this.canSmelt()) {
+				this.currentItemEnchantTime = getEnchantTime(this.inventory.getStackInSlot(0),
+						this.inventory.getStackInSlot(1));
+				this.shouldEnchantTime = this.currentItemEnchantTime;
+				this.isEnchanting = true;
+				this.smeltItem();
+			} else {
+				this.enchantTime = 0;
+				this.currentItemEnchantTime = 0;
+				this.enchantingTime = 0;
+				this.shouldEnchantTime = 0;
+				this.isEnchanting = false;
+			}
 		}
 		this.markDirty();
 	}
@@ -192,11 +192,12 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		ItemStack slot2 = this.inventory.getStackInSlot(2);
 		boolean canSmelt = false;
 
-		if (slot0 != ItemStack.EMPTY && slot1 != ItemStack.EMPTY) {
+		if (!(slot0.isEmpty() && slot1.isEmpty())) {
 			ItemStack recipes = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
 			Utils.getLogger().info(recipes.toString());
 			if (recipes != ItemStack.EMPTY) {
-				if (((slot2.getItem() == recipes.getItem() && slot2.getCount() < 64) || slot2 == ItemStack.EMPTY)
+				if (((slot2.getItem() == recipes.getItem()
+						&& slot2.getCount() < slot2.getItem().getItemStackLimit(slot2)) || slot2.isEmpty())
 						&& this.energy.getEnergyStored() > 10) {
 					canSmelt = true;
 				}
@@ -206,31 +207,24 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 	}
 
 	public void smeltItem() {
-		if (this.canSmelt()) {
-			ItemStack slot0 = this.inventory.getStackInSlot(0);
-			ItemStack slot1 = this.inventory.getStackInSlot(1);
-			ItemStack result = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
-			ItemStack slot2 = this.inventory.getStackInSlot(2);
+		ItemStack slot0 = this.inventory.getStackInSlot(0);
+		ItemStack slot1 = this.inventory.getStackInSlot(1);
+		ItemStack result = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
+		ItemStack slot2 = this.inventory.getStackInSlot(2);
 
-			if (this.isEnchanting()) {
-				if (this.enchantTime >= this.getShouldEnchantTime()) {
-					slot0.shrink(1);
-					slot1.shrink(1);
-					if(slot1.getCount() == 0) {
-						this.inventory.setStackInSlot(1, ItemStack.EMPTY);
-					}
-					if(slot0.getCount() == 0) {
-						this.inventory.setStackInSlot(0, ItemStack.EMPTY);
-					}
-					if (slot2 == ItemStack.EMPTY) {
-						this.inventory.setStackInSlot(2, result);
-					} else {
-						slot2.grow(result.getCount());
-					}
+		if (this.isEnchanting()) {
+			if (this.enchantTime >= this.getShouldEnchantTime()) {
+				Utils.getLogger().info(slot2.toString());
+				slot0.shrink(1);
+				slot1.shrink(1);
+				if (slot2.isEmpty() || slot2.getItem() == Item.getItemFromBlock(Blocks.AIR)) {
+					this.inventory.setStackInSlot(2, result);
 				} else {
-					this.enchantTime++;
-					this.energy.extractEnergy(10, false);
+					slot2.grow(result.getCount());
 				}
+			} else {
+				this.enchantTime++;
+				this.energy.extractEnergy(10, false);
 			}
 		}
 	}
