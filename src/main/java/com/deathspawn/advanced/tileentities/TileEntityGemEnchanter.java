@@ -208,17 +208,19 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 	public void smeltItem() {
 		ItemStack slot0 = this.inventory.getStackInSlot(0);
+		//Utils.getLogger().info(slot0.getItem().toString());
 		ItemStack slot1 = this.inventory.getStackInSlot(1);
+		//Utils.getLogger().info(slot1.getItem().toString());
 		ItemStack result = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
 		ItemStack slot2 = this.inventory.getStackInSlot(2);
 
 		if (this.isEnchanting()) {
 			if (this.enchantTime >= this.getShouldEnchantTime()) {
-				Utils.getLogger().info(slot2.toString());
+				//Utils.getLogger().info(slot2.toString());
 				slot0.shrink(1);
 				slot1.shrink(1);
 				if (slot2.isEmpty() || slot2.getItem() == Item.getItemFromBlock(Blocks.AIR)) {
-					this.inventory.setStackInSlot(2, result);
+					this.inventory.setStackInSlot(2, result.copy());
 				} else {
 					slot2.grow(result.getCount());
 				}
