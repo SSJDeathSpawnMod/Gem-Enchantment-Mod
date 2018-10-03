@@ -21,7 +21,7 @@ public class GuiHandler implements IGuiHandler {
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if(ID == GUI_ID.GEM_ENCHANTER.getGUI_ID()) {
-			return new GuiGemEnchanter(player.inventory, (TileEntityGemEnchanter) world.getTileEntity(new BlockPos(x,y,z)));
+			return new GuiGemEnchanter(player.inventory, (TileEntityGemEnchanter) world.getTileEntity(new BlockPos(x,y,z)), world);
 		}
 		return null;
 	}

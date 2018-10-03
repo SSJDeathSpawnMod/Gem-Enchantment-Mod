@@ -74,10 +74,7 @@ public class GemEnchanterRecipes {
 		for (Entry<ItemStack, Map<ItemStack, ItemStack>> entry : this.enchantingList.columnMap().entrySet()) {
 			if (this.compareItemStacks(input1, (ItemStack) entry.getKey())) {
 				for (Entry<ItemStack, ItemStack> ent : entry.getValue().entrySet()) {
-					Utils.getLogger().info(entry.getKey());
-					Utils.getLogger().info(ent.getKey());
 					if (this.compareItemStacks(input2, (ItemStack) ent.getKey())) {
-						Utils.getLogger().info("Reached here!");
 						return (ItemStack) ent.getValue();
 					}
 				}

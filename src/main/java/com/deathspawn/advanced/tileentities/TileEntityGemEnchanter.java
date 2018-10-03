@@ -35,7 +35,7 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 	private int currentItemEnchantTime;
 	private int enchantTime;
-	private int shouldEnchantTime = 50;
+	private int shouldEnchantTime;
 	private String enchanterCustomName;
 	private int counter = 0;
 
@@ -69,6 +69,23 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 			this.enchanterCustomName = compound.getString("CustomName");
 		}
 	}
+	
+	public int getField(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                return this.shouldEnchantTime;
+            case 1:
+                return this.currentItemEnchantTime;
+            case 2:
+                return this.enchantTime;
+            case 3:
+                return this.enchantingTime;
+            default:
+                return 0;
+        }
+    }
 
 	public boolean isEmpty() {
 		for (int i = 0; i > this.inventory.getSlots(); i++) {
@@ -149,12 +166,10 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 	@Override
 	public void update() {
-		if (!this.world.isRemote) {
 			List<EntityItem> items = new ArrayList<EntityItem>();
 			items.addAll(world.getEntitiesWithinAABB(EntityItem.class,
 					new AxisAlignedBB(pos.add(3, 3, 3), pos.add(-3, -3, -3))));
 			for (EntityItem item : items) {
-				Utils.getLogger().info(item.getItem().getItem().toString());
 				if (item.getItem().getItem() == Items.STICK) {
 					Utils.getLogger().info("Added Power!");
 					this.energy.receiveEnergy(1000, false);
@@ -174,7 +189,6 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 				this.shouldEnchantTime = 0;
 				this.isEnchanting = false;
 			}
-		}
 		this.markDirty();
 	}
 
@@ -191,10 +205,8 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		ItemStack slot1 = this.inventory.getStackInSlot(1);
 		ItemStack slot2 = this.inventory.getStackInSlot(2);
 		boolean canSmelt = false;
-
 		if (!(slot0.isEmpty() && slot1.isEmpty())) {
 			ItemStack recipes = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
-			Utils.getLogger().info(recipes.toString());
 			if (recipes != ItemStack.EMPTY) {
 				if (((slot2.getItem() == recipes.getItem()
 						&& slot2.getCount() < slot2.getItem().getItemStackLimit(slot2)) || slot2.isEmpty())
@@ -208,15 +220,12 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 	public void smeltItem() {
 		ItemStack slot0 = this.inventory.getStackInSlot(0);
-		//Utils.getLogger().info(slot0.getItem().toString());
 		ItemStack slot1 = this.inventory.getStackInSlot(1);
-		//Utils.getLogger().info(slot1.getItem().toString());
 		ItemStack result = GemEnchanterRecipes.instance().getEnchantingResult(slot0, slot1);
 		ItemStack slot2 = this.inventory.getStackInSlot(2);
 
 		if (this.isEnchanting()) {
-			if (this.enchantTime >= this.getShouldEnchantTime()) {
-				//Utils.getLogger().info(slot2.toString());
+			if (this.enchantTime >= this.shouldEnchantTime) {
 				slot0.shrink(1);
 				slot1.shrink(1);
 				if (slot2.isEmpty() || slot2.getItem() == Item.getItemFromBlock(Blocks.AIR)) {
