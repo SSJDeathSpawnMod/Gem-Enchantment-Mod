@@ -4,6 +4,10 @@ item.fire_hoe.name=Fire Hoe
 item.fire_pickaxe.name=Fire Pickaxe
 item.fire_shovel.name=Fire Shovel
 item.fire_sword.name=Fire Sword
+item.fire_helmet.name=Fire Helmet
+item.fire_chestplate.name=Fire Chestplate
+item.fire_leggings.name=Fire Leggings
+item.fire_boots.name=Fire Boots
 
 tile.fire_ore.name=Fire Ore
 tile.fire_block.name=Block of Fire
@@ -12,3 +16,5 @@ tile.gem_enchanter.name=Gem Infusion Table
 container.enchanter=Gem Infusion Table
 
 itemGroup.mainGemEnchantmentMod=Gem Enchantment Mod
+
+fluid.enchanted=Enchanted Fluid

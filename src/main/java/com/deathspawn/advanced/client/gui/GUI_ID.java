@@ -2,7 +2,8 @@ package com.deathspawn.advanced.client.gui;
 
 public enum GUI_ID {
 	
-	GEM_ENCHANTER(0);
+	GEM_ENCHANTER(0),
+	ENERGY_GENERATOR(1);
 	
 	private int GUI_ID;
 	

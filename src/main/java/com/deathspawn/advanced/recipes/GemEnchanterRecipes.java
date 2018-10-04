@@ -41,6 +41,10 @@ public class GemEnchanterRecipes {
 		this.addEnchanting(ModItems.fireGem, Items.DIAMOND_PICKAXE, new ItemStack(ModItems.firePickaxe, 1), 5.0F);
 		this.addEnchanting(ModItems.fireGem, Items.DIAMOND_SHOVEL, new ItemStack(ModItems.fireShovel, 1), 5.0F);
 		this.addEnchanting(ModItems.fireGem, Items.DIAMOND_SWORD, new ItemStack(ModItems.fireSword, 1), 5.0F);
+		this.addEnchanting(ModItems.fireGem, Items.DIAMOND_HELMET, new ItemStack(ModItems.fireHelmet, 1),  10.0F);
+		this.addEnchanting(ModItems.fireGem, Items.DIAMOND_CHESTPLATE, new ItemStack(ModItems.fireChestplate, 1),  10.0F);
+		this.addEnchanting(ModItems.fireGem, Items.DIAMOND_LEGGINGS, new ItemStack(ModItems.fireLeggings, 1),  10.0F);
+		this.addEnchanting(ModItems.fireGem, Items.DIAMOND_BOOTS, new ItemStack(ModItems.fireBoots, 1),  10.0F);
 	}
 
 	/**
