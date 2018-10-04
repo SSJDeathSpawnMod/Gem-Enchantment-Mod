@@ -15,6 +15,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -175,6 +177,10 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 					this.energy.receiveEnergy(1000, false);
 				}
 			}
+			
+			if(this.world.isBlockLoaded(getPos())) { 
+				this.world.notifyBlockUpdate(getPos(), this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
+			}
 
 			if (this.canSmelt()) {
 				this.currentItemEnchantTime = getEnchantTime(this.inventory.getStackInSlot(0),
@@ -278,6 +284,31 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return index == 1 || index == 2;
+	}
+	
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket(){
+	    NBTTagCompound nbtTag = new NBTTagCompound();
+	    nbtTag.setTag("inventory", inventory.serializeNBT());
+		energy.writeToNBT(nbtTag);
+		nbtTag.setInteger("enchantTime", this.enchantTime);
+		nbtTag.setInteger("currentItemEnchantTime", this.currentItemEnchantTime);
+		nbtTag.setInteger("enchantingTime", this.enchantingTime);
+		nbtTag.setInteger("shouldEnchantTime", this.shouldEnchantTime);
+		nbtTag.setBoolean("isEnchanting", this.isEnchanting);
+	    return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt){
+	    NBTTagCompound tag = pkt.getNbtCompound();
+	    inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+		energy.readFromNBT(tag);
+		this.enchantTime = tag.getInteger("enchantTime");
+		this.currentItemEnchantTime = tag.getInteger("currentItemEnchantTime");
+		this.enchantingTime = tag.getInteger("enchantingTime");
+		this.shouldEnchantTime = tag.getInteger("shouldEnchantTime");
+		this.isEnchanting = tag.getBoolean("isEnchanting");
 	}
 
 }

@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-public class ClientProxy extends CommonProxy {
+public class ClientProxy implements CommonProxy {
 	
 	@Override
 	public void getItemRenderer(Item item, int meta, String variant) {
@@ -25,7 +25,6 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void init() {
-		super.init();
 		NetworkRegistry.INSTANCE.registerGuiHandler(GemEnchantmentMod.instance, new GuiHandler());
 	}
 	
