@@ -2,6 +2,7 @@ package com.deathspawn.advanced.main;
 
 import com.deathspawn.advanced.init.ModItems;
 import com.deathspawn.advanced.lib.Reference;
+import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.proxy.CommonProxy;
 
 import net.minecraft.item.ItemStack;
@@ -30,7 +31,6 @@ public class GemEnchantmentMod {
 	
 	@EventHandler
 	public static void PreInit(FMLPreInitializationEvent event) {
-		
 	}
 	
 	@EventHandler

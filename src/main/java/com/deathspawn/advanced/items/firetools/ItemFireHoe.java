@@ -5,6 +5,7 @@ import com.deathspawn.advanced.lib.IHasModel;
 import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemHoe;
 import net.minecraft.util.ResourceLocation;
 
@@ -14,8 +15,8 @@ public class ItemFireHoe extends ItemHoe implements IHasModel{
 		super(material);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, registryName));
-		this.setCreativeTab(GemEnchantmentMod.mainTab);
 		ModItems.ITEMS.add(this);
+		this.setCreativeTab(CreativeTabs.TOOLS);
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,8 +28,8 @@ public class ItemFireAxe extends ItemTool implements IHasModel {
 		super(material, EFFECTIVE_ON);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, registryName));
-		this.setCreativeTab(GemEnchantmentMod.mainTab);
 		ModItems.ITEMS.add(this);
+		this.setCreativeTab(CreativeTabs.TOOLS);
 	}
 
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
