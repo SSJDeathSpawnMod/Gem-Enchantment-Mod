@@ -15,12 +15,12 @@ public class ItemBase extends Item implements IHasModel{
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, unlocalizedName));
 		
 		ModItems.ITEMS.add(this);
-		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 
 	@Override
 	public void registerModel() {
 		GemEnchantmentMod.proxy.getItemRenderer(this, 0, "inventory");
+		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 	
 }

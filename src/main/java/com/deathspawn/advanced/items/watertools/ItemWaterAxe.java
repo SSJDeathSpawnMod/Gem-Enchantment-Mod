@@ -29,7 +29,6 @@ public class ItemWaterAxe extends ItemTool implements IHasModel {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, registryName));
 		ModItems.ITEMS.add(this);
-		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
@@ -42,6 +41,7 @@ public class ItemWaterAxe extends ItemTool implements IHasModel {
 	@Override
 	public void registerModel() {
 		GemEnchantmentMod.proxy.getItemRenderer(this, 0, "inventory");
+		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 
 }

@@ -27,7 +27,7 @@ public class GemEnchantmentMod {
 	@Instance
 	public static GemEnchantmentMod instance;
 	
-	public static GemEnchantmentModCreativeTab mainTab = new GemEnchantmentModCreativeTab("mainAdvancedMod", new ItemStack(ModItems.fireGem, 1));
+	public static GemEnchantmentModCreativeTab mainTab = new GemEnchantmentModCreativeTab("mainGemEnchantmentMod", new ItemStack(ModItems.fireGem, 1));
 	
 	@EventHandler
 	public static void PreInit(FMLPreInitializationEvent event) {

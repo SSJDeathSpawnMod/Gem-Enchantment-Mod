@@ -19,12 +19,12 @@ public class ItemFirePickaxe extends ItemPickaxe implements IHasModel{
 		Utils.getLogger().info(this.isInCreativeTab(GemEnchantmentMod.mainTab));
 		
 		ModItems.ITEMS.add(this);
-		this.setCreativeTab(CreativeTabs.TOOLS);
 	}
 	
 	@Override
 	public void registerModel() {
 		GemEnchantmentMod.proxy.getItemRenderer(this, 0, "inventory");
+		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 	
 }

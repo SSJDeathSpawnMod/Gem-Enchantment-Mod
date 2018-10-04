@@ -16,12 +16,12 @@ public class ItemFireHoe extends ItemHoe implements IHasModel{
 		this.setUnlocalizedName(unlocalizedName);
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, registryName));
 		ModItems.ITEMS.add(this);
-		this.setCreativeTab(CreativeTabs.TOOLS);
 	}
 
 	@Override
 	public void registerModel() {
 		GemEnchantmentMod.proxy.getItemRenderer(this, 0, "inventory");
+		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 
 }

@@ -15,12 +15,12 @@ public class ItemWaterPickaxe extends ItemPickaxe implements IHasModel{
 		this.setUnlocalizedName(unlocalizedName);
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, registryName));
 		ModItems.ITEMS.add(this);
-		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 	
 	@Override
 	public void registerModel() {
 		GemEnchantmentMod.proxy.getItemRenderer(this, 0, "inventory");
+		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 	
 }

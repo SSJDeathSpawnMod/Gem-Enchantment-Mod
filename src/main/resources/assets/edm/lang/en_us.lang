@@ -10,3 +10,5 @@ tile.fire_block.name=Block of Fire
 tile.gem_enchanter.name=Gem Infusion Table
 
 container.enchanter=Gem Infusion Table
+
+itemGroup.mainGemEnchantmentMod=Gem Enchantment Mod
