@@ -17,9 +17,9 @@ public class ItemFirePickaxe extends ItemPickaxe implements IHasModel{
 		this.setUnlocalizedName(unlocalizedName);
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, registryName));
 		Utils.getLogger().info(this.isInCreativeTab(GemEnchantmentMod.mainTab));
-		this.setCreativeTab(CreativeTabs.TOOLS);
 		
 		ModItems.ITEMS.add(this);
+		this.setCreativeTab(CreativeTabs.TOOLS);
 	}
 	
 	@Override

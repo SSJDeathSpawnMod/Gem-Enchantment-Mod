@@ -28,8 +28,8 @@ public class ItemWaterAxe extends ItemTool implements IHasModel {
 		super(material, EFFECTIVE_ON);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setRegistryName(new ResourceLocation(Reference.MOD_ID, registryName));
-		this.setCreativeTab(GemEnchantmentMod.mainTab);
 		ModItems.ITEMS.add(this);
+		this.setCreativeTab(GemEnchantmentMod.mainTab);
 	}
 
 	public float getStrVsBlock(ItemStack stack, IBlockState state) {
