@@ -1,9 +1,11 @@
 package com.deathspawn.advanced.fluids;
 
 import com.deathspawn.advanced.init.ModFluids;
+import com.deathspawn.advanced.init.ModMaterials;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -20,6 +22,15 @@ public class FluidEnchantedLiquid extends Fluid{
 	    public FluidEnchantedLiquid(String fluidName, ResourceLocation still, ResourceLocation flowing) 
 	    {
 	        super(fluidName, still, flowing);
+	        this.setViscosity(1500);
+	        this.setDensity(100);
+	        this.setRarity(EnumRarity.UNCOMMON);
+	        this.setLuminosity(2);
+	        this.setMaterial(ModMaterials.ENCHANTED);
+	        this.setTemperature(300);
+	        this.setFillSound(SoundEvents.ITEM_BUCKET_FILL);
+	        this.setEmptySound(SoundEvents.ITEM_BUCKET_EMPTY);
+	        
 	        ModFluids.FLUIDS.add(this);
 	    }
 	 

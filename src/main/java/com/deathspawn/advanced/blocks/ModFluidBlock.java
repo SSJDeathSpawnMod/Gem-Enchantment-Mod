@@ -7,6 +7,7 @@ import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
