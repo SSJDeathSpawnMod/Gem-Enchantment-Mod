@@ -28,8 +28,6 @@ public class FluidEnchantedLiquid extends Fluid{
 	        this.setLuminosity(2);
 	        this.setMaterial(ModMaterials.ENCHANTED);
 	        this.setTemperature(300);
-	        this.setFillSound(SoundEvents.ITEM_BUCKET_FILL);
-	        this.setEmptySound(SoundEvents.ITEM_BUCKET_EMPTY);
 	        
 	        ModFluids.FLUIDS.add(this);
 	    }
