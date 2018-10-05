@@ -5,6 +5,7 @@ import com.deathspawn.advanced.init.ModBlocks;
 import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.init.ModItems;
 import com.deathspawn.advanced.lib.IHasModel;
+import com.deathspawn.advanced.lib.Utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -26,13 +27,16 @@ public class RegistryHandler {
 
 	@SubscribeEvent
 	public static void onBlockRegister(RegistryEvent.Register<Block> event) {
+		for (Fluid fluid : ModFluids.FLUIDS) {
+			boolean done = FluidRegistry.registerFluid(fluid);
+			FluidRegistry.addBucketForFluid(fluid);
+			if(done) {
+				Utils.getLogger().info("Succcessful!");
+			}
+		}
 		event.getRegistry().registerAll(ModBlocks.BLOCKS.toArray(new Block[0]));
 		GameRegistry.registerTileEntity(((BlockRotatableBase) ModBlocks.enchanterGem).getTileEntityClass(),
 				ModBlocks.enchanterGem.getRegistryName().toString());
-		for (Fluid fluid : ModFluids.FLUIDS) {
-			FluidRegistry.registerFluid(fluid);
-			FluidRegistry.addBucketForFluid(fluid);
-		}
 	}
 
 	@SubscribeEvent

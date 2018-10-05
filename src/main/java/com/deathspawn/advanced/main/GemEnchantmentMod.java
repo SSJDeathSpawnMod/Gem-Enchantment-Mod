@@ -5,6 +5,7 @@ import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.proxy.CommonProxy;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -36,6 +37,7 @@ public class GemEnchantmentMod {
 
 	@EventHandler
 	public static void PreInit(FMLPreInitializationEvent event) {
+		
 	}
 
 	@EventHandler
