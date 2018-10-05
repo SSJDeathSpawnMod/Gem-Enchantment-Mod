@@ -1,4 +1,4 @@
-package com.deathspawn.advanced.blocks;
+package com.deathspawn.advanced.blocks.fluids;
 
 import com.deathspawn.advanced.init.ModBlocks;
 import com.deathspawn.advanced.init.ModItems;

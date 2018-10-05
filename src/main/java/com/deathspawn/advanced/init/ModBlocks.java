@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.deathspawn.advanced.blocks.BlockBase;
 import com.deathspawn.advanced.blocks.BlockOre;
-import com.deathspawn.advanced.blocks.ModFluidBlock;
+import com.deathspawn.advanced.blocks.fluids.ModFluidBlock;
 import com.deathspawn.advanced.blocks.machines.gemenchanter.BlockGemEnchanter;
 import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 

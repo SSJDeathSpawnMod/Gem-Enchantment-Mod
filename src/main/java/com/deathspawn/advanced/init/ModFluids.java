@@ -14,5 +14,5 @@ public class ModFluids {
 	
 	public static List<Fluid> FLUIDS = new ArrayList<Fluid>();
 	
-	public static Fluid enchantedFluid = new FluidEnchantedLiquid("enchanted", new ResourceLocation(Reference.MOD_ID, "enchanted_still"), new ResourceLocation(Reference.MOD_ID, "enchanted_flow")).setMaterial(ModMaterials.ENCHANTED).setDensity(1000).setGaseous(false).setLuminosity(2).setViscosity(1500).setTemperature(300).setRarity(EnumRarity.UNCOMMON);
+	public static Fluid enchantedFluid = new FluidEnchantedLiquid("enchanted", new ResourceLocation(Reference.MOD_ID, "enchanted_still"), new ResourceLocation(Reference.MOD_ID, "enchanted_flow"));
 }
