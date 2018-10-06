@@ -13,20 +13,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileEntitySpecialRendererGemEnchanter extends TileEntitySpecialRenderer<TileEntityGemEnchanter> {
-
+	
+	private static final EntityItem ITEM = new EntityItem(Minecraft.getMinecraft().world, 0, 0, 0, new ItemStack(Items.AIR));
+	
 	@Override
 	public void render(TileEntityGemEnchanter te, double x, double y, double z, float partialTicks, int destroyStage,
 			float alpha) {
-		Item item = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(0).getItem();
-		EntityItem ITEM = new EntityItem(Minecraft.getMinecraft().world, 0, 0, 0,
-				new ItemStack(item));
-		if(item != null || item != Items.AIR ) {
-			GlStateManager.pushMatrix(); {
-				GlStateManager.translate(x+0.5, y+1.1, z+0.5);
-				Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, 0, 0, 0, 0, 0, true);
-			}
-			GlStateManager.popMatrix();
+		ITEM.setItem(new ItemStack(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(0).getItem()));
+		GlStateManager.pushMatrix();
+		{
+			Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, x + 0.5, y + 1, z + 0.5, 0F, partialTicks,
+					false);
 		}
+		GlStateManager.popMatrix();
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 	}
 
