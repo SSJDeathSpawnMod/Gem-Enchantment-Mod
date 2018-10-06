@@ -25,7 +25,7 @@ public class BlockEnergyGenerator extends BlockRotatableBase{
 		if(!worldIn.isRemote) {
 			playerIn.openGui(GemEnchantmentMod.instance, GUI_ID.ENERGY_GENERATOR.getGUI_ID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
-		return true;
+		return false;
 	}
 
 }

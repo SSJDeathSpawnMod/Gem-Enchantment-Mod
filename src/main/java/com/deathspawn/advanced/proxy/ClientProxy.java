@@ -7,6 +7,8 @@ import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.init.ModMaterials;
 import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
+import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
+import com.deathspawn.advanced.tileentities.specialrenderer.TileEntitySpecialRendererGemEnchanter;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -23,6 +25,7 @@ import net.minecraftforge.client.event.EntityViewRenderEvent.FogDensity;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -47,6 +50,7 @@ public class ClientProxy implements CommonProxy {
 	@Override
 	public void init() {
 		NetworkRegistry.INSTANCE.registerGuiHandler(GemEnchantmentMod.instance, new GuiHandler());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGemEnchanter.class, new TileEntitySpecialRendererGemEnchanter());
 	}
 
 	@SideOnly(Side.CLIENT)
