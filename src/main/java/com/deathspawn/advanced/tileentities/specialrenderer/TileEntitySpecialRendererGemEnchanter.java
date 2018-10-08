@@ -34,16 +34,19 @@ public class TileEntitySpecialRendererGemEnchanter extends TileEntitySpecialRend
 			{
 				GlStateManager.disableLighting();
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 15 * 16, 15 * 16);
-				GlStateManager.translate(x + 0.5, y + 1.1, z + 0.5);
-				GlStateManager.translate(-te.getEnchantTime() / 2, 0, 0);
+				GlStateManager.translate(x + calculate(te.getEnchantTime(), te.getShouldEnchantTime()), y + 1.1, z + 0.5);
 				GlStateManager.rotate(180F, 0f, 1.0f, 0f);
 				Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, 0, 0, 0, 0F, 0f, false);
-				GlStateManager.translate(te.getEnchantTime(), 0, 0);
+				GlStateManager.translate(1-calculate(te.getEnchantTime(), te.getShouldEnchantTime()), 0, 0);
 				Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM2, 0, 0, 0, 0F, 0f, false);
 				GlStateManager.enableLighting();
 			}
 			GlStateManager.popMatrix();
 		}
+	}
+	
+	private int calculate(int enchantTime, int shouldEnchantTime) {
+		return (enchantTime / shouldEnchantTime) / 2;
 	}
 
 }

@@ -29,7 +29,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityGemEnchanter extends TileEntityBase implements ITickable, ICapabilityProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(4);
-	private DynamicEnergyStorage energy = new DynamicEnergyStorage(10000);
+	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
 
 	private boolean isEnchanting;
 
