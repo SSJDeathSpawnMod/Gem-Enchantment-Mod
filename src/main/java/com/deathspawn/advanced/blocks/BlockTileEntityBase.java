@@ -8,31 +8,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockTileEntityBase extends BlockBase implements ITileEntityProvider{
+public abstract class BlockTileEntityBase extends BlockBase implements ITileEntityProvider{
 	
-	private static Class tileEntity;
-	
-	public BlockTileEntityBase(Material materialIn, String registryName, float resistance, float hardness,Class<? extends TileEntity> tileEntity) {
+	public BlockTileEntityBase(Material materialIn, String registryName, float resistance, float hardness) {
 		super(materialIn, registryName, resistance, hardness);
-		this.tileEntity = tileEntity;
-	}
-	
-	public Class<? extends TileEntity> getTileEntityClass() {
-		return tileEntity;
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		TileEntity tile = null;
-		try {
-			tile = ((TileEntity)tileEntity.newInstance());
-		}catch(ClassCastException | InstantiationException | IllegalAccessException e){
-			Utils.getLogger().info(e.getMessage());
-		}
-		if(tile == null) {
-			tile = new TileEntityDebug();
-		}
-		return tile;
 	}
 
 }

@@ -1,14 +1,15 @@
 package com.deathspawn.advanced.blocks.machines.gemenchanter;
 
 import com.deathspawn.advanced.blocks.BlockRotatableBase;
+import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.client.gui.GUI_ID;
-import com.deathspawn.advanced.energy.DynamicEnergyStorage;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
 import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -19,9 +20,8 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 public class BlockGemEnchanter extends BlockRotatableBase{
 	
-	public BlockGemEnchanter(Material materialIn, String registryName, float resistance, float hardness,
-			Class tileEntity) {
-		super(materialIn, registryName, resistance, hardness, tileEntity);
+	public BlockGemEnchanter(Material materialIn, String registryName, float resistance, float hardness) {
+		super(materialIn, registryName, resistance, hardness);
 	}
 	
 	@Override
@@ -33,4 +33,14 @@ public class BlockGemEnchanter extends BlockRotatableBase{
 		return true;
 	}
 
+	@Override
+	public TileEntity createNewTileEntity(World worldIn, int meta) {
+		return new TileEntityGemEnchanter();
+	}
+	
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileEntityGemEnchanter();
+	}
+	
 }

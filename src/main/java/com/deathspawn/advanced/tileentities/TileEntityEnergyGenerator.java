@@ -1,9 +1,12 @@
 package com.deathspawn.advanced.tileentities;
 
-import com.deathspawn.advanced.energy.DynamicEnergyStorage;
+import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
+import com.deathspawn.advanced.capabilityhandlers.DynamicFluidTank;
 import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.lib.Utils;
 
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -22,16 +25,17 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityEnergyGenerator extends TileEntityBase implements ITickable, ICapabilityProvider {
 
-	private ItemStackHandler inventory = new ItemStackHandler(1);
+	private ItemStackHandler inventory = new ItemStackHandler(3);
 	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
-	private FluidTank fluid = new FluidTank(ModFluids.enchantedFluid, 0, 100000);
+	private DynamicFluidTank fluid = new DynamicFluidTank(ModFluids.enchantedFluid, 0, 100000);
 	private String generatorCustomName;
 
 	@Override
 	public void update() {
 		if (this.inventory.getStackInSlot(0).isItemEqual(
 				FluidUtil.getFilledBucket(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME)))) {
-			fluid.fill(new FluidStack(ModFluids.enchantedFluid, 10), true);
+			fluid.fill(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME), true);
+			this.inventory.setStackInSlot(0, new ItemStack(Items.BUCKET));
 			Utils.getLogger().info("Filling up");
 		}
 	}
@@ -61,7 +65,7 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 	}
 	
 	public String getName() {
-		return this.hasCustomName() ? this.generatorCustomName : "container.enchanter";
+		return this.hasCustomName() ? this.generatorCustomName : "container.generator";
 	}
 
 	public boolean hasCustomName() {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.deathspawn.advanced.energy.DynamicEnergyStorage;
+import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.recipes.GemEnchanterRecipes;
 

@@ -1,8 +1,12 @@
 package com.deathspawn.advanced.main;
 
+import com.deathspawn.advanced.blocks.BlockRotatableBase;
+import com.deathspawn.advanced.init.ModBlocks;
 import com.deathspawn.advanced.init.ModItems;
 import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.proxy.CommonProxy;
+import com.deathspawn.advanced.tileentities.TileEntityEnergyGenerator;
+import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,6 +21,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod(name = Reference.MOD_NAME, modid = Reference.MOD_ID, version = Reference.VERSION, acceptedMinecraftVersions = "1.12.2")
 public class GemEnchantmentMod {
@@ -44,6 +49,8 @@ public class GemEnchantmentMod {
 	@EventHandler
 	public static void Init(FMLInitializationEvent event) {
 		proxy.init();
+		GameRegistry.registerTileEntity(TileEntityGemEnchanter.class,Reference.MOD_ID + ":gem_enchanter");
+		GameRegistry.registerTileEntity(TileEntityEnergyGenerator.class,Reference.MOD_ID + ":energy_generator");
 	}
 
 	@EventHandler

@@ -21,8 +21,8 @@ public class ModBlocks {
 	//Blocks
 	public static Block fireOre = new BlockOre(Material.ROCK, "fire_ore", 2.0f, 3.5f, ModItems.fireGem);
 	public static Block fireBlock = new BlockBase(Material.IRON, "fire_block", 5.0f, 4.0f);
-	public static Block enchanterGem = new BlockGemEnchanter(Material.IRON, "gem_enchanter", 6.0f, 5.0f, TileEntityGemEnchanter.class);
-	public static Block energyGenerator = new BlockEnergyGenerator(Material.IRON, "energy_generator", 7.0f, 5.0f, TileEntityEnergyGenerator.class);
+	public static Block enchanterGem = new BlockGemEnchanter(Material.IRON, "gem_enchanter", 6.0f, 5.0f);
+	public static Block energyGenerator = new BlockEnergyGenerator(Material.IRON, "energy_generator", 7.0f, 5.0f);
 	
 	//Fluids
 	public static Block enchantedFluidBlock = new ModFluidBlock(ModFluids.enchantedFluid, ModMaterials.ENCHANTED, "enchanted");

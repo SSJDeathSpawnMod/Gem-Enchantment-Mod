@@ -14,6 +14,12 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class GuiEnergyGenerator extends GuiContainer{
 
@@ -31,14 +37,36 @@ public class GuiEnergyGenerator extends GuiContainer{
 		this.playerInv = playerInv;
 		this.worldIn = worldIn;
 	}
+	
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
+    }
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(new ResourceLocation(Reference.MOD_ID, "textures/gui/container/energy_generator.png"));
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+		
+		IEnergyStorage energyHandler = this.te.getCapability(CapabilityEnergy.ENERGY, null);
+		IFluidHandler fluidHandler = this.te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+		
+		int l = calculateDownward(74, energyHandler.getEnergyStored(), energyHandler.getMaxEnergyStored());
+		this.drawTexturedModalRect(this.guiLeft+134, this.guiTop+4, 176, 0, 37, l);
+		
+		l = calculateDownward(70, ((FluidTank)fluidHandler).getFluidAmount(), ((FluidTank)fluidHandler).getCapacity());
+		this.drawTexturedModalRect(this.guiLeft+122, this.guiTop+8, 176, 75, 7, l);
 	}
 	
+	private int calculateDownward(int scale, int current, int max) {
+		IEnergyStorage handler = this.te.getCapability(CapabilityEnergy.ENERGY, null);
+		return current / max * scale;
+	}
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String s = GemEnchantmentMod.proxy.localize(te.getName()); //Gets the formatted name for the block breaker from the language file - NOTE ADD "container.block_breaker=Block Breaker" to the language file (without quotes) and then delete this note

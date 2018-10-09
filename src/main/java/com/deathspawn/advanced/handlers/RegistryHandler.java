@@ -5,7 +5,9 @@ import com.deathspawn.advanced.init.ModBlocks;
 import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.init.ModItems;
 import com.deathspawn.advanced.lib.IHasModel;
+import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.lib.Utils;
+import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -35,8 +37,6 @@ public class RegistryHandler {
 			}
 		}
 		event.getRegistry().registerAll(ModBlocks.BLOCKS.toArray(new Block[0]));
-		GameRegistry.registerTileEntity(((BlockRotatableBase) ModBlocks.enchanterGem).getTileEntityClass(),
-				ModBlocks.enchanterGem.getRegistryName().toString());
 	}
 
 	@SubscribeEvent

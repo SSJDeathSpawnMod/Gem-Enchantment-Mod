@@ -28,8 +28,8 @@ public class ContainerEnergyGenerator extends Container {
 
 		IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-		this.addSlotToContainer(new SlotItemHandler(handler, 0, 56, 17));
-		this.addSlotToContainer(new SlotEnergyGeneratorBattery(handler, 1, 56, 53));
+		this.addSlotToContainer(new SlotItemHandler(handler, 0, 9, 17));
+		this.addSlotToContainer(new SlotEnergyGeneratorBattery(handler, 1, 9, 53));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {

@@ -1,4 +1,4 @@
-package com.deathspawn.advanced.energy;
+package com.deathspawn.advanced.capabilityhandlers;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.energy.EnergyStorage;

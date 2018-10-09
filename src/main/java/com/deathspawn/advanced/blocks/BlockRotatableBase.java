@@ -16,13 +16,12 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockRotatableBase extends BlockTileEntityBase {
+public abstract class BlockRotatableBase extends BlockTileEntityBase {
 
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	
-	public BlockRotatableBase(Material materialIn, String registryName, float resistance, float hardness,
-			Class tileEntity) {
-		super(materialIn, registryName, resistance, hardness, tileEntity);
+	public BlockRotatableBase(Material materialIn, String registryName, float resistance, float hardness) {
+		super(materialIn, registryName, resistance, hardness);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
