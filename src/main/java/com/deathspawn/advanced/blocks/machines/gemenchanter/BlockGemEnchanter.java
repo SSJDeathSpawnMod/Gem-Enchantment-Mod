@@ -30,7 +30,7 @@ public class BlockGemEnchanter extends BlockRotatableBase{
 		if(!worldIn.isRemote) {
 			playerIn.openGui(GemEnchantmentMod.instance, GUI_ID.GEM_ENCHANTER.getGUI_ID(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
-		return false;
+		return true;
 	}
 
 }

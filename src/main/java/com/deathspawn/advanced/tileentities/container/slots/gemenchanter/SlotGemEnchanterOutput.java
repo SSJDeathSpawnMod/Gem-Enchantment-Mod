@@ -1,4 +1,4 @@
-package com.deathspawn.advanced.tileentities.container.slots;
+package com.deathspawn.advanced.tileentities.container.slots.gemenchanter;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "edm:energy_generator" },
+        "facing=south": { "model": "edm:energy_generator", "y": 180 },
+        "facing=west":  { "model": "edm:energy_generator", "y": 270 },
+        "facing=east":  { "model": "edm:energy_generator", "y": 90 }
+    }
+}

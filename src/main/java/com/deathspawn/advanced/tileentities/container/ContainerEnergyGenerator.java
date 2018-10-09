@@ -1,6 +1,8 @@
 package com.deathspawn.advanced.tileentities.container;
 
+import com.deathspawn.advanced.tileentities.TileEntityEnergyGenerator;
 import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
+import com.deathspawn.advanced.tileentities.container.slots.energygenerator.SlotEnergyGeneratorBattery;
 import com.deathspawn.advanced.tileentities.container.slots.gemenchanter.SlotGemEnchanterBattery;
 import com.deathspawn.advanced.tileentities.container.slots.gemenchanter.SlotGemEnchanterOutput;
 
@@ -17,19 +19,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerGemEnchanter extends Container {
+public class ContainerEnergyGenerator extends Container {
 
-	private TileEntityGemEnchanter te;
+	private TileEntityEnergyGenerator te;
 
-	public ContainerGemEnchanter(InventoryPlayer player, TileEntityGemEnchanter te) {
+	public ContainerEnergyGenerator(InventoryPlayer player, TileEntityEnergyGenerator te) {
 		this.te = te;
 
 		IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
 		this.addSlotToContainer(new SlotItemHandler(handler, 0, 56, 17));
-		this.addSlotToContainer(new SlotItemHandler(handler, 1, 56, 53));
-		this.addSlotToContainer(new SlotGemEnchanterOutput(player.player, handler, 2, 116, 35));
-		this.addSlotToContainer(new SlotGemEnchanterBattery(handler, 3, 9, 16));
+		this.addSlotToContainer(new SlotEnergyGeneratorBattery(handler, 1, 56, 53));
 
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {
