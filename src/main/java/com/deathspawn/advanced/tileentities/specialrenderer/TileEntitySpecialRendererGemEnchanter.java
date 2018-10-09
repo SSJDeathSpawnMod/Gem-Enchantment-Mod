@@ -40,17 +40,10 @@ public class TileEntitySpecialRendererGemEnchanter extends TileEntitySpecialRend
 				double x2, z2;
 				GlStateManager.disableLighting();
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 15 * 16, 15 * 16);
-				if (this.getWorld().getBlockState(new BlockPos(x, y, z)).getBlock() == ModBlocks.enchanterGem) {
-					switch (this.getWorld().getBlockState(new BlockPos(x, y, z)).getValue(BlockRotatableBase.FACING)) {
+				if (this.getWorld().getBlockState(te.getPos()).getBlock() == ModBlocks.enchanterGem) {
+					switch (this.getWorld().getBlockState(te.getPos()).getValue(BlockRotatableBase.FACING)) {
 					case NORTH:
-						z2 = z - calculate(te.getEnchantTime(), te.getShouldEnchantTime());
-						GlStateManager.translate(x + 0.5, y + 1.05, z2);
-						GlStateManager.rotate(180F, 0f, 1.0f, 0f);
-						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, 0, 0, 0, 0F, 0f, false);
-						GlStateManager.translate(0, 0, calculate(te.getEnchantTime(), te.getShouldEnchantTime()));
-						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM2, 0, 0, 0, 0F, 0f, false);
-						break;
-					case EAST:
+						Utils.getLogger().info(this.getWorld().getBlockState(te.getPos()).getValue(BlockRotatableBase.FACING));
 						x2 = x + calculate(te.getEnchantTime(), te.getShouldEnchantTime());
 						GlStateManager.translate(x2, y + 1.05, z + 0.5);
 						GlStateManager.rotate(180F, 0f, 1.0f, 0f);
@@ -58,7 +51,17 @@ public class TileEntitySpecialRendererGemEnchanter extends TileEntitySpecialRend
 						GlStateManager.translate(-calculate(te.getEnchantTime(), te.getShouldEnchantTime()), 0, 0);
 						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM2, 0, 0, 0, 0F, 0f, false);
 						break;
+					case EAST:
+						Utils.getLogger().info(this.getWorld().getBlockState(te.getPos()).getValue(BlockRotatableBase.FACING));
+						z2 = z + calculate(te.getEnchantTime(), te.getShouldEnchantTime());
+						GlStateManager.translate(x + 0.5, y + 1.05, z2);
+						GlStateManager.rotate(180F, 0f, 1.0f, 0f);
+						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, 0, 0, 0, 0F, 0f, false);
+						GlStateManager.translate(0, 0, -calculate(te.getEnchantTime(), te.getShouldEnchantTime()));
+						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM2, 0, 0, 0, 0F, 0f, false);
+						break;
 					case WEST:
+						Utils.getLogger().info(this.getWorld().getBlockState(te.getPos()).getValue(BlockRotatableBase.FACING));
 						x2 = x - calculate(te.getEnchantTime(), te.getShouldEnchantTime());
 						GlStateManager.translate(x2, y + 1.05, z + 0.5);
 						GlStateManager.rotate(180F, 0f, 1.0f, 0f);
@@ -67,22 +70,23 @@ public class TileEntitySpecialRendererGemEnchanter extends TileEntitySpecialRend
 						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM2, 0, 0, 0, 0F, 0f, false);
 						break;
 					case SOUTH:
-						z2 = z + calculate(te.getEnchantTime(), te.getShouldEnchantTime());
+						Utils.getLogger().info(this.getWorld().getBlockState(te.getPos()).getValue(BlockRotatableBase.FACING));
+						z2 = z - calculate(te.getEnchantTime(), te.getShouldEnchantTime());
 						GlStateManager.translate(x + 0.5, y + 1.05, z2);
 						GlStateManager.rotate(180F, 0f, 1.0f, 0f);
 						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, 0, 0, 0, 0F, 0f, false);
-						GlStateManager.translate(0, 0, -calculate(te.getEnchantTime(), te.getShouldEnchantTime()));
+						GlStateManager.translate(0, 0, calculate(te.getEnchantTime(), te.getShouldEnchantTime()));
 						Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM2, 0, 0, 0, 0F, 0f, false);
 						break;
-					case UP:
-						break;
-					case DOWN:
-						break;
 					default:
+						Utils.getLogger().info(this.getWorld().getBlockState(te.getPos()).getValue(BlockRotatableBase.FACING));
 						break;
 
 					}
 					GlStateManager.enableLighting();
+				}
+				else {
+					Utils.getLogger().info(this.getWorld().getBlockState(te.getPos()).getBlock());
 				}
 			}
 			GlStateManager.popMatrix();
