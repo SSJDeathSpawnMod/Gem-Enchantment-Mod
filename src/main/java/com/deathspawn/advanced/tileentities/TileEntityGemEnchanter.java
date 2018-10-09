@@ -199,7 +199,7 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 	}
 
 	public int getEnchantTime(ItemStack stack, ItemStack stack2) {
-		return 50;
+		return 200;
 	}
 
 	/**

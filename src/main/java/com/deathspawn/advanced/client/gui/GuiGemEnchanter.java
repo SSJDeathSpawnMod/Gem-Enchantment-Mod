@@ -50,8 +50,6 @@ public class GuiGemEnchanter extends GuiContainer{
 
 	private int getCookProgressScaled(int pixels)
     {
-		Utils.getLogger().info(this.te.getEnchantTime());
-		Utils.getLogger().info(this.te.getShouldEnchantTime());
         int i = this.te.getEnchantTime();
         int j = this.te.getShouldEnchantTime();
         return j != 0 && i != 0 ? i * pixels / j : 0;
