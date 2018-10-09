@@ -27,7 +27,7 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 
 	private ItemStackHandler inventory = new ItemStackHandler(3);
 	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
-	private DynamicFluidTank fluid = new DynamicFluidTank(ModFluids.enchantedFluid, 0, 100000);
+	private DynamicFluidTank fluid = new DynamicFluidTank(100000);
 	private String generatorCustomName;
 
 	@Override
@@ -78,26 +78,26 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		energy.writeToNBT(compound);
-		compound.setTag("inventory", inventory.serializeNBT());
-		fluid.writeToNBT(compound);
+		this.energy.writeToNBT(compound);
+		compound.setTag("inventory", this.inventory.serializeNBT());
+		this.fluid.writeToNBT(compound);
 		return super.writeToNBT(compound);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		energy.readFromNBT(compound);
-		inventory.deserializeNBT(compound.getCompoundTag("inventory"));
-		fluid.readFromNBT(compound);
+		this.energy.readFromNBT(compound);
+		this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
+		this.fluid.readFromNBT(compound);
 		super.readFromNBT(compound);
 	}
 
 	@Override
 	public SPacketUpdateTileEntity getUpdatePacket() {
 		NBTTagCompound nbt = new NBTTagCompound();
-		energy.writeToNBT(nbt);
-		nbt.setTag("inventory", inventory.serializeNBT());
-		fluid.writeToNBT(nbt);
+		this.energy.writeToNBT(nbt);
+		nbt.setTag("inventory", this.inventory.serializeNBT());
+		this.fluid.writeToNBT(nbt);
 		SPacketUpdateTileEntity packet = new SPacketUpdateTileEntity(getPos(), 1, nbt);
 		return packet;
 	}
@@ -105,9 +105,9 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 		NBTTagCompound nbt = pkt.getNbtCompound();
-		energy.readFromNBT(nbt);
-		inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
-		fluid.readFromNBT(nbt);
+		this.energy.readFromNBT(nbt);
+		this.inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
+		this.fluid.readFromNBT(nbt);
 		super.onDataPacket(net, pkt);
 	}
 

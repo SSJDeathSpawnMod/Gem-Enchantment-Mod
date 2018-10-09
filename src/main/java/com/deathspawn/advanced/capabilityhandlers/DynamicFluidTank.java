@@ -43,7 +43,7 @@ public class DynamicFluidTank extends FluidTank
         {
             setFluid(null);
         }
-        this.capacity = nbt.getInteger("tankCapacity");
+        this.capacity = nbt.getInteger("Capacity");
         return this;
     }
 
@@ -57,7 +57,7 @@ public class DynamicFluidTank extends FluidTank
         {
             nbt.setString("Empty", "");
         }
-        nbt.setInteger("tankCapacity", this.capacity);
+        nbt.setInteger("Capacity", this.capacity);
         return nbt;
     }
 
