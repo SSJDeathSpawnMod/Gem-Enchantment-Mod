@@ -14,17 +14,11 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 public class DynamicFluidTank extends FluidTank
 {
-    @Nullable
-    protected FluidStack fluid;
-    protected int capacity;
-    protected TileEntity tile;
-    protected boolean canFill = true;
-    protected boolean canDrain = true;
-    protected IFluidTankProperties[] tankProperties;
 
     public DynamicFluidTank(int capacity)
     {
         super(null, capacity);
+        this.capacity = capacity;
     }
 
     public DynamicFluidTank(Fluid fluid, int amount, int capacity)

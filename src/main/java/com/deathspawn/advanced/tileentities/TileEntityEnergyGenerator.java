@@ -16,6 +16,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
@@ -27,13 +28,20 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 
 	private ItemStackHandler inventory = new ItemStackHandler(3);
 	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
-	private DynamicFluidTank fluid = new DynamicFluidTank(100000);
+	private DynamicFluidTank fluid = new DynamicFluidTank(ModFluids.enchantedFluid, 0, 100000);
 	private String generatorCustomName;
+
+	public TileEntityEnergyGenerator() {
+		this.setFluidAmount(0);
+		this.setFluidCapacity(100000);
+		this.fluid.setTileEntity(this);
+	}
 
 	@Override
 	public void update() {
 		if (this.inventory.getStackInSlot(0).isItemEqual(
 				FluidUtil.getFilledBucket(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME)))) {
+			Utils.getLogger().info(this.getFluidCapacity());
 			fluid.fill(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME), true);
 			this.inventory.setStackInSlot(0, new ItemStack(Items.BUCKET));
 			Utils.getLogger().info("Filling up");
@@ -63,7 +71,7 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 		}
 		return super.getCapability(capability, facing);
 	}
-	
+
 	public String getName() {
 		return this.hasCustomName() ? this.generatorCustomName : "container.generator";
 	}
@@ -76,11 +84,29 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 		this.generatorCustomName = name;
 	}
 
+	public int getFluidCapacity() {
+		return this.fluid.getCapacity();
+	}
+
+	public void setFluidCapacity(int capacity) {
+		this.fluid.setCapacity(capacity);
+	}
+
+	public int getFluidAmount() {
+		return this.fluid.getFluidAmount();
+	}
+
+	public void setFluidAmount(int amount) {
+		this.fluid.setFluid(new FluidStack(ModFluids.enchantedFluid, amount));
+	}
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		this.energy.writeToNBT(compound);
 		compound.setTag("inventory", this.inventory.serializeNBT());
 		this.fluid.writeToNBT(compound);
+		compound.setInteger("Capacity", this.getFluidCapacity());
+		compound.setInteger("Amount", this.getFluidAmount());
 		return super.writeToNBT(compound);
 	}
 
@@ -89,6 +115,8 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 		this.energy.readFromNBT(compound);
 		this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		this.fluid.readFromNBT(compound);
+		this.setFluidCapacity(compound.getInteger("Capacity"));
+		this.setFluidAmount(compound.getInteger("Amount"));
 		super.readFromNBT(compound);
 	}
 
@@ -97,7 +125,8 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.energy.writeToNBT(nbt);
 		nbt.setTag("inventory", this.inventory.serializeNBT());
-		this.fluid.writeToNBT(nbt);
+		nbt.setInteger("Capacity", this.getFluidCapacity());
+		nbt.setInteger("Amount", this.getFluidAmount());
 		SPacketUpdateTileEntity packet = new SPacketUpdateTileEntity(getPos(), 1, nbt);
 		return packet;
 	}
@@ -107,7 +136,8 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 		NBTTagCompound nbt = pkt.getNbtCompound();
 		this.energy.readFromNBT(nbt);
 		this.inventory.deserializeNBT(nbt.getCompoundTag("inventory"));
-		this.fluid.readFromNBT(nbt);
+		this.setFluidCapacity(nbt.getInteger("Capacity"));
+		this.setFluidAmount(nbt.getInteger("Amount"));
 		super.onDataPacket(net, pkt);
 	}
 

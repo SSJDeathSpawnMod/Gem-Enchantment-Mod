@@ -54,16 +54,15 @@ public class GuiEnergyGenerator extends GuiContainer {
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
 		IEnergyStorage energyHandler = this.te.getCapability(CapabilityEnergy.ENERGY, null);
-		IFluidHandler fluidHandler = this.te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
 		if (energyHandler.getEnergyStored() > 0) {
 			int l = calculateDownward(74, energyHandler.getEnergyStored(), energyHandler.getMaxEnergyStored());
 			this.drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 4, 176, 0, 37, l);
 		}
 
-		if (((DynamicFluidTank) fluidHandler).getFluidAmount() > 0) {
-			int l = calculateDownward(70, ((DynamicFluidTank) fluidHandler).getFluidAmount(),
-					((DynamicFluidTank) fluidHandler).getCapacity());
+		if (this.te.getFluidAmount() > 0) {
+			int l = calculateDownward(70, this.te.getFluidAmount(),
+					this.te.getFluidCapacity());
 			this.drawTexturedModalRect(this.guiLeft + 122, this.guiTop + 8, 176, 75, 7, l);
 		}
 	}
