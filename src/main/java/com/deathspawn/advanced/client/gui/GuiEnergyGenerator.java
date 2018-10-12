@@ -79,5 +79,13 @@ public class GuiEnergyGenerator extends GuiContainer {
 		this.mc.fontRenderer.drawString(this.playerInv.getDisplayName().getFormattedText(), 8, 72, 4210752);
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 	}
+	
+	@Override
+	protected void renderHoveredToolTip(int mouseX, int mouseY) {
+		super.renderHoveredToolTip(mouseX, mouseY);
+		if(mouseX >= 122 && mouseY >= 8 && mouseX < 129 && mouseY < 78) {
+			this.drawHoveringText(this.te.getFluidAmount() + " / " + this.te.getFluidCapacity(), mouseX, mouseY);
+		}
+	}
 
 }

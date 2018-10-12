@@ -30,6 +30,16 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 	private ItemStackHandler inventory = new ItemStackHandler(3);
 	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
 	private DynamicFluidTank fluid = new DynamicFluidTank(ModFluids.enchantedFluid, 0, 100000);
+	private int timeToMake;
+	private boolean isGenerating;
+	public boolean isGenerating() {
+		return isGenerating;
+	}
+
+	public void setGenerating(boolean isGenerating) {
+		this.isGenerating = isGenerating;
+	}
+
 	private String generatorCustomName;
 
 	public TileEntityEnergyGenerator() {
@@ -49,6 +59,33 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 				this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
 			}
 			this.markDirty();
+		}
+		if(this.getFluidAmount() >= 1000) {
+			this.timeToMake++;
+			this.setGenerating(true);
+			if(this.world.isBlockLoaded(this.getPos())) {
+				this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
+			}
+			this.markDirty();
+			if(this.timeToMake > 20) {
+				this.energy.receiveEnergy(20, false);
+				this.fluid.drain(new FluidStack(ModFluids.enchantedFluid, 1000), true);
+				if(this.world.isBlockLoaded(this.getPos())) {
+					this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
+				}
+				this.markDirty();
+			}
+		}
+		else
+		{
+			if(this.isGenerating()) {
+				if(this.world.isBlockLoaded(this.getPos())) {
+					this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
+				}
+				this.markDirty();
+			}
+			this.setGenerating(false);
+			this.timeToMake = 0;
 		}
 	}
 

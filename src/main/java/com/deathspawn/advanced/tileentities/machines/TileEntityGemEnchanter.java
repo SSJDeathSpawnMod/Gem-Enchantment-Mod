@@ -73,21 +73,6 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 		}
 	}
 
-	public int getField(int id) {
-		switch (id) {
-		case 0:
-			return this.shouldEnchantTime;
-		case 1:
-			return this.currentItemEnchantTime;
-		case 2:
-			return this.enchantTime;
-		case 3:
-			return this.enchantingTime;
-		default:
-			return 0;
-		}
-	}
-
 	public boolean isEmpty() {
 		for (int i = 0; i > this.inventory.getSlots(); i++) {
 			if (!this.inventory.getStackInSlot(i).isEmpty()) {
