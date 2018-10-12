@@ -5,8 +5,8 @@ import com.deathspawn.advanced.init.ModBlocks;
 import com.deathspawn.advanced.init.ModItems;
 import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.proxy.CommonProxy;
-import com.deathspawn.advanced.tileentities.TileEntityEnergyGenerator;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
+import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.RegistryEvent;

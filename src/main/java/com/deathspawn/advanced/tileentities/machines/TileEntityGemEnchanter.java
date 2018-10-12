@@ -1,4 +1,4 @@
-package com.deathspawn.advanced.tileentities;
+package com.deathspawn.advanced.tileentities.machines;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.recipes.GemEnchanterRecipes;
+import com.deathspawn.advanced.tileentities.TileEntityBase;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -71,23 +72,21 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 			this.enchanterCustomName = compound.getString("CustomName");
 		}
 	}
-	
-	public int getField(int id)
-    {
-        switch (id)
-        {
-            case 0:
-                return this.shouldEnchantTime;
-            case 1:
-                return this.currentItemEnchantTime;
-            case 2:
-                return this.enchantTime;
-            case 3:
-                return this.enchantingTime;
-            default:
-                return 0;
-        }
-    }
+
+	public int getField(int id) {
+		switch (id) {
+		case 0:
+			return this.shouldEnchantTime;
+		case 1:
+			return this.currentItemEnchantTime;
+		case 2:
+			return this.enchantTime;
+		case 3:
+			return this.enchantingTime;
+		default:
+			return 0;
+		}
+	}
 
 	public boolean isEmpty() {
 		for (int i = 0; i > this.inventory.getSlots(); i++) {
@@ -168,33 +167,46 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 
 	@Override
 	public void update() {
-			List<EntityItem> items = new ArrayList<EntityItem>();
-			items.addAll(world.getEntitiesWithinAABB(EntityItem.class,
-					new AxisAlignedBB(pos.add(3, 3, 3), pos.add(-3, -3, -3))));
-			for (EntityItem item : items) {
-				if (item.getItem().getItem() == Items.STICK) {
-					Utils.getLogger().info("Added Power!");
-					this.energy.receiveEnergy(1000, false);
-				}
+		
+		boolean shouldUpdate = false;
+		
+		
+		List<EntityItem> items = new ArrayList<EntityItem>();
+		items.addAll(world.getEntitiesWithinAABB(EntityItem.class,
+				new AxisAlignedBB(pos.add(3, 3, 3), pos.add(-3, -3, -3))));
+		for (EntityItem item : items) {
+			if (item.getItem().getItem() == Items.STICK) {
+				Utils.getLogger().info("Added Power!");
+				this.energy.receiveEnergy(1000, false);
 			}
-			
-			if(this.world.isBlockLoaded(getPos())) { 
-				this.world.notifyBlockUpdate(getPos(), this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
-			}
+		}
 
-			if (this.canSmelt()) {
-				this.currentItemEnchantTime = getEnchantTime(this.inventory.getStackInSlot(0),
-						this.inventory.getStackInSlot(1));
-				this.shouldEnchantTime = this.currentItemEnchantTime;
-				this.isEnchanting = true;
-				this.smeltItem();
-			} else {
-				this.enchantTime = 0;
-				this.currentItemEnchantTime = 0;
-				this.enchantingTime = 0;
-				this.shouldEnchantTime = 0;
-				this.isEnchanting = false;
+		if (this.canSmelt()) {
+			this.currentItemEnchantTime = getEnchantTime(this.inventory.getStackInSlot(0),
+					this.inventory.getStackInSlot(1));
+			this.shouldEnchantTime = this.currentItemEnchantTime;
+			this.isEnchanting = true;
+			if (this.world.isBlockLoaded(getPos())) {
+				this.world.notifyBlockUpdate(getPos(), this.world.getBlockState(getPos()),
+						this.world.getBlockState(getPos()), 2);
 			}
+			shouldUpdate = true;
+			this.smeltItem();
+		} else {
+			this.enchantTime = 0;
+			this.currentItemEnchantTime = 0;
+			this.enchantingTime = 0;
+			this.shouldEnchantTime = 0;
+			if(this.isEnchanting() && this.world.isBlockLoaded(getPos())) {
+				this.world.notifyBlockUpdate(getPos(), this.world.getBlockState(getPos()),
+						this.world.getBlockState(getPos()), 2);
+			}
+			if(this.isEnchanting()) {
+				shouldUpdate = true;
+			}
+			this.isEnchanting = false;
+		}
+		if(shouldUpdate)
 		this.markDirty();
 	}
 
@@ -285,24 +297,24 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
 		return index == 1 || index == 2;
 	}
-	
+
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket(){
-	    NBTTagCompound nbtTag = new NBTTagCompound();
-	    nbtTag.setTag("inventory", inventory.serializeNBT());
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		NBTTagCompound nbtTag = new NBTTagCompound();
+		nbtTag.setTag("inventory", inventory.serializeNBT());
 		energy.writeToNBT(nbtTag);
 		nbtTag.setInteger("enchantTime", this.enchantTime);
 		nbtTag.setInteger("currentItemEnchantTime", this.currentItemEnchantTime);
 		nbtTag.setInteger("enchantingTime", this.enchantingTime);
 		nbtTag.setInteger("shouldEnchantTime", this.shouldEnchantTime);
 		nbtTag.setBoolean("isEnchanting", this.isEnchanting);
-	    return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
+		return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt){
-	    NBTTagCompound tag = pkt.getNbtCompound();
-	    inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		NBTTagCompound tag = pkt.getNbtCompound();
+		inventory.deserializeNBT(tag.getCompoundTag("inventory"));
 		energy.readFromNBT(tag);
 		this.enchantTime = tag.getInteger("enchantTime");
 		this.currentItemEnchantTime = tag.getInteger("currentItemEnchantTime");

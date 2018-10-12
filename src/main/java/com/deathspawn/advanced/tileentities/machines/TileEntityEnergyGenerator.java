@@ -1,9 +1,10 @@
-package com.deathspawn.advanced.tileentities;
+package com.deathspawn.advanced.tileentities.machines;
 
 import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.capabilityhandlers.DynamicFluidTank;
 import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.lib.Utils;
+import com.deathspawn.advanced.tileentities.TileEntityBase;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -41,10 +42,13 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 	public void update() {
 		if (this.inventory.getStackInSlot(0).isItemEqual(
 				FluidUtil.getFilledBucket(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME)))) {
-			Utils.getLogger().info(this.getFluidCapacity());
 			fluid.fill(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME), true);
 			this.inventory.setStackInSlot(0, new ItemStack(Items.BUCKET));
 			Utils.getLogger().info("Filling up");
+			if(this.world.isBlockLoaded(this.getPos())) {
+				this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
+			}
+			this.markDirty();
 		}
 	}
 

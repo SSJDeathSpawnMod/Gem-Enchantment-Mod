@@ -7,7 +7,7 @@ import com.deathspawn.advanced.init.ModItems;
 import com.deathspawn.advanced.lib.IHasModel;
 import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.lib.Utils;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

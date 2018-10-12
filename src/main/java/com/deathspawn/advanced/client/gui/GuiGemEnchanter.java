@@ -3,8 +3,8 @@ package com.deathspawn.advanced.client.gui;
 import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 import com.deathspawn.advanced.tileentities.container.ContainerGemEnchanter;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;

@@ -1,9 +1,9 @@
 package com.deathspawn.advanced.client.gui;
 
-import com.deathspawn.advanced.tileentities.TileEntityEnergyGenerator;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 import com.deathspawn.advanced.tileentities.container.ContainerEnergyGenerator;
 import com.deathspawn.advanced.tileentities.container.ContainerGemEnchanter;
+import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;

@@ -8,8 +8,8 @@ import com.deathspawn.advanced.blocks.BlockOre;
 import com.deathspawn.advanced.blocks.fluids.ModFluidBlock;
 import com.deathspawn.advanced.blocks.machines.energygenerator.BlockEnergyGenerator;
 import com.deathspawn.advanced.blocks.machines.gemenchanter.BlockGemEnchanter;
-import com.deathspawn.advanced.tileentities.TileEntityEnergyGenerator;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
+import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

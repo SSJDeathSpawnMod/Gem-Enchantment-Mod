@@ -4,7 +4,7 @@ import com.deathspawn.advanced.blocks.BlockRotatableBase;
 import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.client.gui.GUI_ID;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

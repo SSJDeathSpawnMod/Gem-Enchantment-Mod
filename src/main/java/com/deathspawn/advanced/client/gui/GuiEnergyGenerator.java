@@ -4,10 +4,10 @@ import com.deathspawn.advanced.capabilityhandlers.DynamicFluidTank;
 import com.deathspawn.advanced.lib.Reference;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
-import com.deathspawn.advanced.tileentities.TileEntityEnergyGenerator;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 import com.deathspawn.advanced.tileentities.container.ContainerEnergyGenerator;
 import com.deathspawn.advanced.tileentities.container.ContainerGemEnchanter;
+import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -61,23 +61,20 @@ public class GuiEnergyGenerator extends GuiContainer {
 		}
 
 		if (this.te.getFluidAmount() > 0) {
-			int l = calculateDownward(70, this.te.getFluidAmount(),
-					this.te.getFluidCapacity());
+			int l = calculateDownward(70.0F, (float)this.te.getFluidAmount(),
+					(float)this.te.getFluidCapacity());
+			Utils.getLogger().info(((float)this.te.getFluidAmount() / (float)this.te.getFluidCapacity()) * 70.0F);
 			this.drawTexturedModalRect(this.guiLeft + 122, this.guiTop + 8, 176, 75, 7, l);
 		}
 	}
 
-	private int calculateDownward(int scale, int current, int max) {
-		return current / max * scale;
+	private int calculateDownward(float scale, float current, float max) {
+		return (int)(current / max * scale);
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String s = GemEnchantmentMod.proxy.localize(te.getName()); // Gets the formatted name for the block breaker from
-																	// the language file - NOTE ADD
-																	// "container.block_breaker=Block Breaker" to the
-																	// language file (without quotes) and then delete
-																	// this note
+		String s = GemEnchantmentMod.proxy.localize(te.getName());
 		this.mc.fontRenderer.drawString(s, this.xSize / 2 - this.mc.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		this.mc.fontRenderer.drawString(this.playerInv.getDisplayName().getFormattedText(), 8, 72, 4210752);
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);

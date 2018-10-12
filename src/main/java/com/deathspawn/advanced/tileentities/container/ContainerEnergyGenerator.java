@@ -1,10 +1,10 @@
 package com.deathspawn.advanced.tileentities.container;
 
-import com.deathspawn.advanced.tileentities.TileEntityEnergyGenerator;
-import com.deathspawn.advanced.tileentities.TileEntityGemEnchanter;
 import com.deathspawn.advanced.tileentities.container.slots.energygenerator.SlotEnergyGeneratorBattery;
 import com.deathspawn.advanced.tileentities.container.slots.gemenchanter.SlotGemEnchanterBattery;
 import com.deathspawn.advanced.tileentities.container.slots.gemenchanter.SlotGemEnchanterOutput;
+import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
+import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
