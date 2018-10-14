@@ -1,8 +1,7 @@
 package com.deathspawn.advanced.blocks.machines.gemenchanter;
 
 import com.deathspawn.advanced.blocks.BlockRotatableBase;
-import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
-import com.deathspawn.advanced.client.gui.GUI_ID;
+import com.deathspawn.advanced.handlers.EnumHandler.GUI_ID;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
 import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
@@ -13,10 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 public class BlockGemEnchanter extends BlockRotatableBase{
 	

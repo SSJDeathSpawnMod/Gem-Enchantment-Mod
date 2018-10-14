@@ -1,7 +1,7 @@
 package com.deathspawn.advanced.blocks.machines.energygenerator;
 
 import com.deathspawn.advanced.blocks.BlockRotatableBase;
-import com.deathspawn.advanced.client.gui.GUI_ID;
+import com.deathspawn.advanced.handlers.EnumHandler.GUI_ID;
 import com.deathspawn.advanced.main.GemEnchantmentMod;
 import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
 

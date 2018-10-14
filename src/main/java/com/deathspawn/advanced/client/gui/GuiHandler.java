@@ -1,5 +1,6 @@
 package com.deathspawn.advanced.client.gui;
 
+import com.deathspawn.advanced.handlers.EnumHandler.GUI_ID;
 import com.deathspawn.advanced.tileentities.container.ContainerEnergyGenerator;
 import com.deathspawn.advanced.tileentities.container.ContainerGemEnchanter;
 import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;

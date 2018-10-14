@@ -2,6 +2,7 @@ package com.deathspawn.advanced.tileentities.machines;
 
 import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.capabilityhandlers.DynamicFluidTank;
+import com.deathspawn.advanced.handlers.EnumHandler.IO;
 import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.tileentities.TileEntityBase;
@@ -25,13 +26,23 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityEnergyGenerator extends TileEntityBase implements ITickable, ICapabilityProvider {
+public class TileEntityEnergyGenerator extends TileEntityMachine implements ITickable, ICapabilityProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(3);
 	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
 	private DynamicFluidTank fluid = new DynamicFluidTank(ModFluids.enchantedFluid, 0, 100000);
 	private int timeToMake;
 	private boolean isGenerating;
+
+	private String generatorCustomName;
+
+	public TileEntityEnergyGenerator() {
+		super(IO.OUTPUT);
+		this.setFluidAmount(0);
+		this.setFluidCapacity(100000);
+		this.fluid.setTileEntity(this);
+	}
+	
 	public boolean isGenerating() {
 		return isGenerating;
 	}
@@ -39,15 +50,7 @@ public class TileEntityEnergyGenerator extends TileEntityBase implements ITickab
 	public void setGenerating(boolean isGenerating) {
 		this.isGenerating = isGenerating;
 	}
-
-	private String generatorCustomName;
-
-	public TileEntityEnergyGenerator() {
-		this.setFluidAmount(0);
-		this.setFluidCapacity(100000);
-		this.fluid.setTileEntity(this);
-	}
-
+	
 	@Override
 	public void update() {
 		if (this.inventory.getStackInSlot(0).isItemEqual(
