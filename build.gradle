@@ -2,9 +2,14 @@ buildscript {
     repositories {
         jcenter()
         maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name = "CoFH Maven"
+            url = "http://maven.covers1624.net"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'

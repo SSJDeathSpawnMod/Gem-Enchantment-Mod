@@ -1,11 +1,10 @@
 package com.deathspawn.advanced.tileentities.machines;
 
-import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.capabilityhandlers.DynamicFluidTank;
 import com.deathspawn.advanced.handlers.EnumHandler.IO;
 import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.lib.Utils;
-import com.deathspawn.advanced.tileentities.TileEntityBase;
+import com.deathspawn.advanced.redflux.EnergyGenerator;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -18,9 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -29,7 +26,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityEnergyGenerator extends TileEntityMachine implements ITickable, ICapabilityProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(3);
-	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
+	private EnergyGenerator energy = new EnergyGenerator(100000, 100);
 	private DynamicFluidTank fluid = new DynamicFluidTank(ModFluids.enchantedFluid, 0, 100000);
 	private int timeToMake;
 	private boolean isGenerating;
@@ -54,42 +51,37 @@ public class TileEntityEnergyGenerator extends TileEntityMachine implements ITic
 	@Override
 	public void update() {
 		super.update();
+		boolean update = false;
 		if (this.inventory.getStackInSlot(0).isItemEqual(
 				FluidUtil.getFilledBucket(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME)))) {
 			fluid.fill(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME), true);
 			this.inventory.setStackInSlot(0, new ItemStack(Items.BUCKET));
 			Utils.getLogger().info("Filling up");
-			if(this.world.isBlockLoaded(this.getPos())) {
-				this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
-			}
-			this.markDirty();
+			update = true;
 		}
 		if(this.getFluidAmount() >= 1000) {
 			this.timeToMake++;
 			this.setGenerating(true);
-			if(this.world.isBlockLoaded(this.getPos())) {
-				this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
-			}
-			this.markDirty();
+			update = true;
 			if(this.timeToMake > 20) {
-				this.energy.receiveEnergy(20, false);
+				this.energy.modifyEnergy(20);
 				this.fluid.drain(new FluidStack(ModFluids.enchantedFluid, 1000), true);
-				if(this.world.isBlockLoaded(this.getPos())) {
-					this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
-				}
-				this.markDirty();
+				update = true;
 			}
 		}
 		else
 		{
 			if(this.isGenerating()) {
-				if(this.world.isBlockLoaded(this.getPos())) {
-					this.world.notifyBlockUpdate(this.getPos(),  this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
-				}
-				this.markDirty();
+				update = true;
 			}
 			this.setGenerating(false);
 			this.timeToMake = 0;
+		}
+		if(update) {
+			if(world.isBlockLoaded(getPos())) {
+				world.notifyBlockUpdate(getPos(), this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
+			}
+			this.markDirty();
 		}
 	}
 

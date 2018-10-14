@@ -9,6 +9,7 @@ import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.handlers.EnumHandler.IO;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.recipes.GemEnchanterRecipes;
+import com.deathspawn.advanced.redflux.EnergyMachine;
 import com.deathspawn.advanced.tileentities.TileEntityBase;
 
 import net.minecraft.entity.item.EntityItem;
@@ -31,7 +32,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityGemEnchanter extends TileEntityMachine implements ITickable, ICapabilityProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(4);
-	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
+	private EnergyMachine energy = new EnergyMachine(100000, 1000);
 
 	private boolean isEnchanting;
 
@@ -167,7 +168,7 @@ public class TileEntityGemEnchanter extends TileEntityMachine implements ITickab
 		for (EntityItem item : items) {
 			if (item.getItem().getItem() == Items.STICK) {
 				Utils.getLogger().info("Added Power!");
-				this.energy.receiveEnergy(1000, false);
+				this.energy.modifyEnergy(1000);
 			}
 		}
 
@@ -218,7 +219,7 @@ public class TileEntityGemEnchanter extends TileEntityMachine implements ITickab
 			if (recipes != ItemStack.EMPTY) {
 				if (((slot2.getItem() == recipes.getItem()
 						&& slot2.getCount() < slot2.getItem().getItemStackLimit(slot2)) || slot2.isEmpty())
-						&& this.energy.getEnergyStored() > 10) {
+						&& this.energy.getEnergyStored(null) > 10) {
 					canSmelt = true;
 				}
 			}
@@ -243,7 +244,7 @@ public class TileEntityGemEnchanter extends TileEntityMachine implements ITickab
 				}
 			} else {
 				this.enchantTime++;
-				this.energy.extractEnergy(10, false);
+				this.energy.modifyEnergy(-10);
 			}
 		}
 	}
