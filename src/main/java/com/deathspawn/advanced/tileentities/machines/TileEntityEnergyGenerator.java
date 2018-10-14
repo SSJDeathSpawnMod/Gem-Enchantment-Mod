@@ -53,6 +53,7 @@ public class TileEntityEnergyGenerator extends TileEntityMachine implements ITic
 	
 	@Override
 	public void update() {
+		super.update();
 		if (this.inventory.getStackInSlot(0).isItemEqual(
 				FluidUtil.getFilledBucket(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME)))) {
 			fluid.fill(new FluidStack(ModFluids.enchantedFluid, Fluid.BUCKET_VOLUME), true);

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
+import com.deathspawn.advanced.handlers.EnumHandler.IO;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.recipes.GemEnchanterRecipes;
 import com.deathspawn.advanced.tileentities.TileEntityBase;
@@ -27,7 +28,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityGemEnchanter extends TileEntityBase implements ITickable, ICapabilityProvider {
+public class TileEntityGemEnchanter extends TileEntityMachine implements ITickable, ICapabilityProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(4);
 	private DynamicEnergyStorage energy = new DynamicEnergyStorage(100000);
@@ -41,6 +42,10 @@ public class TileEntityGemEnchanter extends TileEntityBase implements ITickable,
 	private int shouldEnchantTime;
 	private String enchanterCustomName;
 	private int counter = 0;
+	
+	public TileEntityGemEnchanter() {
+		super(IO.INPUT);
+	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
