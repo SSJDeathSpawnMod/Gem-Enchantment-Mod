@@ -1,15 +1,15 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "modid": "edm",
+  "name": "Gem Enchantment Tools Mod",
+  "description": "This mod adds in machine and specialised tools which can help your survival experience in a lot of ways.",
+  "version": "v0.3",
+  "mcversion": "[1.12],[1.12.2]",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
+  "authorList": ["DeathSpawn"],
+  "credits": "",
+  "logoFile": "assets/edm/textures/logo/logo.png",
   "screenshots": [],
   "dependencies": []
 }

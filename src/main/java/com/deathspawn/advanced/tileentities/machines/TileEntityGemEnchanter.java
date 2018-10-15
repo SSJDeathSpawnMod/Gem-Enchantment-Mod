@@ -5,12 +5,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.deathspawn.advanced.capabilityhandlers.DynamicEnergyStorage;
 import com.deathspawn.advanced.handlers.EnumHandler.IO;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.recipes.GemEnchanterRecipes;
 import com.deathspawn.advanced.redflux.EnergyMachine;
-import com.deathspawn.advanced.tileentities.TileEntityBase;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
