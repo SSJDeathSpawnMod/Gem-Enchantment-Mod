@@ -15,5 +15,4 @@ public class SlotEnergyGeneratorBattery extends SlotItemHandler{
 		return false;
 	}
 	
-	
 }

@@ -1,7 +1,10 @@
 package com.deathspawn.advanced.redflux;
 
+import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
+
 import cofh.redstoneflux.api.IEnergyProvider;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 public class EnergyGenerator implements IEnergyProvider{
@@ -10,18 +13,20 @@ public class EnergyGenerator implements IEnergyProvider{
 	private int energy;
 	private int maxExtract;
 	private int maxReceive;
+	private TileEntity te;
 	
-	public EnergyGenerator(int capacity) {
-		this(capacity, capacity, capacity);
+	public EnergyGenerator(int capacity, TileEntity te) {
+		this(capacity, capacity, capacity, te);
 	}
-	public EnergyGenerator(int capacity, int transfer) {
-		this(capacity, transfer, transfer);
+	public EnergyGenerator(int capacity, int transfer, TileEntity te) {
+		this(capacity, transfer, transfer, te);
 	}
 	
-	public EnergyGenerator(int capacity, int maxExtract, int maxReceive) {
+	public EnergyGenerator(int capacity, int maxExtract, int maxReceive, TileEntity te) {
 		this.capacity = capacity;
 		this.maxExtract = maxExtract;
 		this.maxReceive = maxReceive;
+		this.te = te;
 	}
 	
 	public void modifyEnergy(int amount) {
@@ -64,6 +69,9 @@ public class EnergyGenerator implements IEnergyProvider{
 
 	@Override
 	public boolean canConnectEnergy(EnumFacing from) {
+		if(this.te instanceof TileEntityEnergyGenerator) {
+			
+		}
 		return true;
 	}
 

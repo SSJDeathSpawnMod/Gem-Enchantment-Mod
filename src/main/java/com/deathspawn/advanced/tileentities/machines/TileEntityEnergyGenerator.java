@@ -6,6 +6,8 @@ import com.deathspawn.advanced.init.ModFluids;
 import com.deathspawn.advanced.lib.Utils;
 import com.deathspawn.advanced.redflux.EnergyGenerator;
 
+import cofh.redstoneflux.api.IEnergyConnection;
+import cofh.redstoneflux.api.IEnergyHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,7 +28,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TileEntityEnergyGenerator extends TileEntityMachine implements ITickable, ICapabilityProvider {
 
 	private ItemStackHandler inventory = new ItemStackHandler(3);
-	private EnergyGenerator energy = new EnergyGenerator(100000, 100);
+	private EnergyGenerator energy = new EnergyGenerator(100000, 100, this);
 	private DynamicFluidTank fluid = new DynamicFluidTank(ModFluids.enchantedFluid, 0, 100000);
 	private int timeToMake;
 	private boolean isGenerating;
@@ -39,7 +41,7 @@ public class TileEntityEnergyGenerator extends TileEntityMachine implements ITic
 		this.setFluidCapacity(100000);
 		this.fluid.setTileEntity(this);
 	}
-	
+
 	public boolean isGenerating() {
 		return isGenerating;
 	}
@@ -47,7 +49,7 @@ public class TileEntityEnergyGenerator extends TileEntityMachine implements ITic
 	public void setGenerating(boolean isGenerating) {
 		this.isGenerating = isGenerating;
 	}
-	
+
 	@Override
 	public void update() {
 		super.update();
@@ -59,27 +61,26 @@ public class TileEntityEnergyGenerator extends TileEntityMachine implements ITic
 			Utils.getLogger().info("Filling up");
 			update = true;
 		}
-		if(this.getFluidAmount() >= 1000) {
+		if (this.getFluidAmount() >= 1000) {
 			this.timeToMake++;
 			this.setGenerating(true);
 			update = true;
-			if(this.timeToMake > 20) {
-				this.energy.modifyEnergy(20);
+			if (this.timeToMake > 20) {
+				this.energy.modifyEnergy(1000);
 				this.fluid.drain(new FluidStack(ModFluids.enchantedFluid, 1000), true);
 				update = true;
 			}
-		}
-		else
-		{
-			if(this.isGenerating()) {
+		} else {
+			if (this.isGenerating()) {
 				update = true;
 			}
 			this.setGenerating(false);
 			this.timeToMake = 0;
 		}
-		if(update) {
-			if(world.isBlockLoaded(getPos())) {
-				world.notifyBlockUpdate(getPos(), this.world.getBlockState(getPos()), this.world.getBlockState(getPos()), 2);
+		if (update) {
+			if (world.isBlockLoaded(getPos())) {
+				world.notifyBlockUpdate(getPos(), this.world.getBlockState(getPos()),
+						this.world.getBlockState(getPos()), 2);
 			}
 			this.markDirty();
 		}
@@ -89,24 +90,29 @@ public class TileEntityEnergyGenerator extends TileEntityMachine implements ITic
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
-		} else if (capability == CapabilityEnergy.ENERGY) {
-			return true;
 		} else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return true;
 		}
 		return super.hasCapability(capability, facing);
 	}
-
+	
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) this.inventory;
-		} else if (capability == CapabilityEnergy.ENERGY) {
-			return (T) this.energy;
 		} else if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return (T) this.fluid;
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	public IEnergyHandler getEnergyHandler(EnumFacing facing) {
+		if (facing == null) {
+			return this.energy;
+		} else if (this.energy.canConnectEnergy(facing)) {
+			return this.energy;
+		}
+		return null;
 	}
 
 	public String getName() {
@@ -176,6 +182,14 @@ public class TileEntityEnergyGenerator extends TileEntityMachine implements ITic
 		this.setFluidCapacity(nbt.getInteger("Capacity"));
 		this.setFluidAmount(nbt.getInteger("Amount"));
 		super.onDataPacket(net, pkt);
+	}
+
+	public boolean canConnectEnergy(EnumFacing from) {
+		if (from == EnumFacing.NORTH)
+			return true;
+		else
+			Utils.getLogger().info("Only connect from North");
+		return false;
 	}
 
 }

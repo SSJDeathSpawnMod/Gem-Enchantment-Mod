@@ -9,15 +9,17 @@ import com.deathspawn.advanced.tileentities.container.ContainerGemEnchanter;
 import com.deathspawn.advanced.tileentities.machines.TileEntityEnergyGenerator;
 import com.deathspawn.advanced.tileentities.machines.TileEntityGemEnchanter;
 
+import cofh.redstoneflux.api.IEnergyHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -44,6 +46,7 @@ public class GuiEnergyGenerator extends GuiContainer {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
+		
 	}
 
 	@Override
@@ -53,10 +56,11 @@ public class GuiEnergyGenerator extends GuiContainer {
 				.bindTexture(new ResourceLocation(Reference.MOD_ID, "textures/gui/container/energy_generator.png"));
 		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-		IEnergyStorage energyHandler = this.te.getCapability(CapabilityEnergy.ENERGY, null);
+		 IEnergyHandler energyHandler = this.te.getEnergyHandler(null);
+		 Utils.getLogger().info(energyHandler.getEnergyStored(null));
 
-		if (energyHandler.getEnergyStored() > 0) {
-			int l = calculateDownward(74, energyHandler.getEnergyStored(), energyHandler.getMaxEnergyStored());
+		if (energyHandler.getEnergyStored(null) > 0) {
+			int l = calculateDownward(74, energyHandler.getEnergyStored(null), energyHandler.getMaxEnergyStored(null));
 			this.drawTexturedModalRect(this.guiLeft + 134, this.guiTop + 4, 176, 0, 37, l);
 		}
 
