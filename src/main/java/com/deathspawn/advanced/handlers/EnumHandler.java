@@ -19,7 +19,7 @@ public class EnumHandler {
 	}
 
 	public enum IO {
-		INPUT(0), OUTPUT(1);
+		INPUT(0), OUTPUT(1), TRANSFER(2);
 
 		private int ID;
 
